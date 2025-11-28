@@ -1,13 +1,22 @@
 'use client';
 
+import { motion } from 'motion/react';
+
 interface BrandHeaderProps {
   brandName?: string;
 }
 
-export function BrandHeader({ brandName = 'QuickBasket' }: BrandHeaderProps) {
+export function BrandHeader({ brandName = 'Buggy Cart' }: BrandHeaderProps) {
   return (
-    <div className="fixed top-6 left-6 z-50">
-      <h1 className="text-white text-lg font-semibold tracking-wide">{brandName}</h1>
-    </div>
+    <motion.div
+      className="fixed top-8 left-8 z-50"
+      initial={{ opacity: 0, x: -30, scale: 0.8 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      transition={{ duration: 0.7, type: 'spring', bounce: 0.4 }}
+    >
+      <h1 className="text-3xl font-black text-purple-400 tracking-tight">
+        {brandName}
+      </h1>
+    </motion.div>
   );
 }

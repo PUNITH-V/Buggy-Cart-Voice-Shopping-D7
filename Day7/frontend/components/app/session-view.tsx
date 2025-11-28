@@ -103,11 +103,74 @@ export const SessionView = ({
 
   return (
     <section
-      className="relative z-10 h-full w-full overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-black"
+      className="relative z-10 h-full w-full overflow-hidden bg-slate-950"
       {...props}
     >
+      {/* Animated Background Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+          style={{
+            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%)',
+            left: '-10%',
+            top: '10%',
+          }}
+          animate={{
+            x: [0, 100, -50, 0],
+            y: [0, -80, 50, 0],
+            scale: [1, 1.2, 0.9, 1],
+            rotate: [0, 90, 180, 360],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+        <motion.div
+          className="absolute w-[500px] h-[500px] rounded-full blur-3xl opacity-20"
+          style={{
+            background: 'radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, transparent 70%)',
+            right: '-5%',
+            bottom: '10%',
+          }}
+          animate={{
+            x: [0, -80, 60, 0],
+            y: [0, 70, -40, 0],
+            scale: [1, 1.3, 0.8, 1],
+            rotate: [360, 270, 90, 0],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+        <motion.div
+          className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-15"
+          style={{
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%)',
+            left: '40%',
+            top: '50%',
+          }}
+          animate={{
+            x: [0, -60, 60, 0],
+            y: [0, 60, -60, 0],
+            scale: [1, 1.1, 1.2, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      </div>
+
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)] pointer-events-none" />
+
       {/* Brand Header */}
-      <BrandHeader brandName="QuickBasket" />
+      <BrandHeader brandName="Buggy Cart" />
 
       {/* Chat Transcript */}
       <div

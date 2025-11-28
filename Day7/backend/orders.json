@@ -118,5 +118,47 @@
       }
     ],
     "order_total": 149.0
+  },
+  {
+    "order_id": "ORD-20251128-185416",
+    "timestamp": "2025-11-28T18:54:16.776987",
+    "customer_name": "Jenny",
+    "customer_address": "Oxen University Kamkur, door number thirty two five twenty seven",
+    "delivery_instructions": "",
+    "items": [
+      {
+        "item_id": "tomato",
+        "name": "Fresh Tomatoes",
+        "quantity": 1,
+        "unit_price": 50.0,
+        "line_total": 50.0,
+        "notes": ""
+      },
+      {
+        "item_id": "pasta_pack",
+        "name": "Penne Pasta",
+        "quantity": 2,
+        "unit_price": 85.0,
+        "line_total": 170.0,
+        "notes": "for pasta for two"
+      },
+      {
+        "item_id": "pasta_sauce_jar",
+        "name": "Tomato Basil Pasta Sauce",
+        "quantity": 2,
+        "unit_price": 120.0,
+        "line_total": 240.0,
+        "notes": "for pasta for two"
+      },
+      {
+        "item_id": "cheese_block",
+        "name": "Cheddar Cheese Block",
+        "quantity": 2,
+        "unit_price": 150.0,
+        "line_total": 300.0,
+        "notes": "for pasta for two"
+      }
+    ],
+    "order_total": 760.0
   }
 ]

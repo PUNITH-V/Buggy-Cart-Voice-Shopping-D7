@@ -37,49 +37,55 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md bg-neutral-900 shadow-2xl"
+            transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md bg-slate-950 shadow-2xl backdrop-blur-2xl border-l-2 border-purple-500/30"
           >
             <div className="flex h-full flex-col">
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
-                <h2 className="text-xl font-semibold text-white">Current Cart</h2>
+              <div className="flex items-center justify-between border-b-2 border-purple-500/30 px-6 py-6 bg-purple-900/20">
+                <h2 className="text-3xl font-black text-purple-400">
+                  🛒 Current Cart
+                </h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white"
+                  className="rounded-full p-3 text-purple-400 transition-all hover:bg-purple-500/20 hover:text-pink-400 hover:scale-110 hover:rotate-90"
                 >
-                  <X size={24} weight="bold" />
+                  <X size={26} weight="bold" />
                 </button>
               </div>
 
               {/* Items List */}
-              <div className="flex-1 overflow-y-auto px-6 py-4">
+              <div className="flex-1 overflow-y-auto px-6 py-6">
                 {items.length === 0 ? (
                   <div className="flex h-full items-center justify-center">
-                    <p className="text-neutral-500">Your cart is empty</p>
+                    <p className="text-gray-400 text-xl font-light">Your cart is empty</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {items.map((item) => (
-                      <div
+                    {items.map((item, index) => (
+                      <motion.div
                         key={item.id}
-                        className="rounded-lg bg-neutral-800/50 p-4 border border-neutral-700/50"
+                        initial={{ opacity: 0, x: 30, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ delay: index * 0.1, type: 'spring', bounce: 0.4 }}
+                        whileHover={{ scale: 1.02, x: -5 }}
+                        className="group rounded-2xl bg-slate-800/90 p-6 border-2 border-purple-500/20 hover:border-purple-400/50 transition-all shadow-xl shadow-purple-500/10 hover:shadow-purple-500/20 backdrop-blur-sm"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-medium text-white">{item.name}</h3>
-                            <p className="text-sm text-neutral-400 mt-1">
-                              Quantity: {item.quantity}
+                            <h3 className="font-black text-white text-xl mb-2">{item.name}</h3>
+                            <p className="text-sm text-purple-300 font-bold bg-purple-500/20 px-3 py-1 rounded-full inline-block">
+                              Qty: {item.quantity}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-green-400">
+                            <p className="font-black text-2xl text-purple-400">
                               ₹{(item.quantity * item.price).toFixed(2)}
                             </p>
-                            <p className="text-xs text-neutral-500">₹{item.price} each</p>
+                            <p className="text-xs text-gray-400 mt-1 font-medium">₹{item.price} each</p>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 )}
@@ -87,14 +93,19 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="border-t border-neutral-800 px-6 py-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="border-t-2 border-purple-500/30 px-6 py-8 bg-purple-900/30"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-white">Subtotal</span>
-                    <span className="text-2xl font-bold text-green-400">
+                    <span className="text-2xl font-black text-white">Subtotal</span>
+                    <span className="text-4xl font-black text-purple-400">
                       ₹{subtotal.toFixed(2)}
                     </span>
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
           </motion.div>
