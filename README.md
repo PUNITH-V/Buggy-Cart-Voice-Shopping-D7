@@ -1,4 +1,4 @@
-# Day 7: QuickBasket - Food & Grocery Voice Ordering Assistant
+# Day 7: BuggyCart - Food & Grocery Voice Ordering Assistant
 
 **Challenge:** Build a voice-powered food and grocery ordering system with cart management, recipe ingredient lookup, and order persistence.
 
