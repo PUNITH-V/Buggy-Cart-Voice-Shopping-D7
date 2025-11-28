@@ -1,640 +1,441 @@
-# 🎙️ Murf AI Voice Agents Challenge
+# Day 7: QuickBasket - Food & Grocery Voice Ordering Assistant
 
-> Building **10 AI Voice Agents in 10 Days** using Murf Falcon TTS - the consistently fastest text-to-speech API in the world.
+**Challenge:** Build a voice-powered food and grocery ordering system with cart management, recipe ingredient lookup, and order persistence.
 
-[![Challenge](https://img.shields.io/badge/Challenge-10%20Days%20of%20AI%20Voice%20Agents-blue?style=for-the-badge)](https://murf.ai)
-[![TTS](https://img.shields.io/badge/TTS-Murf%20Falcon-FF6B35?style=for-the-badge&logo=audio)](https://murf.ai/api)
-[![Framework](https://img.shields.io/badge/Framework-LiveKit-00D4AA?style=for-the-badge)](https://livekit.io)
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
+## About This Agent
 
-## 🌟 About This Challenge
+QuickBasket is a smart voice assistant that helps users order groceries, snacks, and prepared foods through natural conversation. Users can add individual items, request ingredients for recipes, manage their cart, and place orders—all saved to JSON files.
 
-Welcome to my journey through the **Murf AI Voice Agents Challenge**! Over 10 days, I'm building 10 unique AI voice agents, each with distinct personas, capabilities, and real-world applications. This challenge showcases the power of combining cutting-edge AI technologies to create natural, responsive voice interactions.
+## ✨ Key Features
 
-### 🛠️ Tech Stack
+### Voice Ordering Capabilities
+- 🛒 **Cart Management** - Add, remove, update quantities via voice
+- 📖 **Recipe Ingredients** - Say "ingredients for pasta" and get all items added
+- 📋 **Cart Review** - Ask "what's in my cart?" anytime
+- 💾 **Order Persistence** - Orders saved to JSON with customer details
+- 🎯 **Smart Item Matching** - Natural language item recognition
 
-| Technology | Purpose | Why This Choice |
-|------------|---------|-----------------|
-| **🎯 Murf Falcon TTS** | Text-to-Speech | Consistently fastest TTS API with natural-sounding voices |
-| **� LiveKi*t** | Real-time Communication | Self-hosted, low-latency voice infrastructure |
-| **🧠 Google Gemini 2.5 Flash** | Language Model | Fast, intelligent conversational AI |
-| **🎤 Deepgram Nova-3** | Speech-to-Text | High-accuracy, real-time transcription |
-| **⚛️ Next.js 15** | Frontend Framework | Modern, performant React framework with Turbopack |
-| **🐍 Python 3.12** | Backend Runtime | Robust agent framework with LiveKit SDK |
+### Product Catalog
+- **20 diverse items** across categories:
+  - Groceries (bread, milk, eggs, rice, oil, etc.)
+  - Snacks (chips, biscuits, chocolate, nuts)
+  - Prepared Food (pizza, pasta, noodles, sandwiches)
+  - Beverages (coffee)
+- Each item includes: name, price, brand, unit, tags
 
-### ✨ Key Features
+### Recipe System
+- Pre-configured recipes with ingredient mappings
+- Examples: "peanut butter sandwich", "pasta for two", "maggi", "breakfast combo"
+- Automatic quantity calculation for servings
 
-- 🚀 **Ultra-fast responses** with Murf Falcon's industry-leading TTS speed
-- 🏠 **Self-hosted LiveKit** for complete control and privacy
-- 🎨 **Beautiful UI** with dark/light themes and smooth animations
-- 🔇 **Noise cancellation** for crystal-clear conversations
-- 🎯 **Smart turn detection** that understands conversation context
-- 📊 **Real-time audio visualization** and level monitoring
-- 📹 **Video & screen sharing** support built-in.
+### Professional UI
+- **Welcome Page:**
+  - Clean, minimal design with green grocery theme
+  - Category chips for visual appeal
+  - "How It Works" section with 3-step guide
+  - Mobile-responsive design
+  
+- **Conversation Screen:**
+  - Real-time cart widget (bottom-right) showing item count and total
+  - Slide-in cart drawer with full item details
+  - Order receipt modal with download JSON functionality
+  - "View Last Order" button (bottom-left)
+  - QuickBasket branding (top-left)
+  - Gradient dark background
+  - All overlays work seamlessly with LiveKit controls
 
-## 📁 Repository Structure
-
-```
-murf-ai-voice-agents-challenge/
-├── Day1/                           # Day 1: Basic Voice Agent Setup
-│   ├── backend/                   # Python backend with LiveKit Agents
-│   │   ├── src/
-│   │   │   └── agent.py          # Main agent implementation
-│   │   ├── .env                   # API keys (not in git)
-│   │   ├── pyproject.toml         # Python dependencies
-│   │   └── README.md              # Backend documentation
-│   ├── frontend/                  # React/Next.js voice interface
-│   │   ├── app/                   # Next.js app directory
-│   │   ├── components/            # React components
-│   │   ├── .env.local             # Frontend config (not in git)
-│   │   ├── package.json           # Node dependencies
-│   │   └── README.md              # Frontend documentation
-│   └── start_app.sh               # Launch script
-├── Day2/                          # Day 2: Falcon Brew - AI Barista
-│   ├── backend/                   # Barista agent with order management
-│   │   ├── src/
-│   │   │   └── agent.py          # Barista implementation
-│   │   └── orders/                # Saved orders (JSON)
-│   ├── frontend/                  # Coffee shop UI
-│   │   ├── app/
-│   │   │   ├── receipt/          # Receipt pages
-│   │   │   └── api/              # Order APIs
-│   │   ├── components/
-│   │   │   └── app/
-│   │   │       ├── order-display.tsx      # Live order tracking
-│   │   │       ├── beverage-visualizer.tsx # Coffee animation
-│   │   │       └── receipt-view.tsx       # Receipt component
-│   │   └── hooks/                # Order state hooks
-│   ├── start_app.sh               # Launch script
-│   └── README.md                  # Day 2 documentation
-├── Day3/                          # Coming soon...
-├── ...                            # Days 4-10
-├── LICENSE                        # MIT License
-├── README.md                      # This file
-└── .gitignore                     # Git ignore rules
-```
-
-## 🏗️ Architecture Overview
+## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                         Browser                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │         Next.js Frontend (Port 3000)                │   │
-│  │  • Voice UI • Audio Visualization • Controls        │   │
-│  └─────────────────────────────────────────────────────┘   │
-└────────────────────────┬────────────────────────────────────┘
-                         │ WebRTC
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│         Local LiveKit Server (Port 7880)                    │
-│  • WebRTC Signaling • Media Routing • Room Management      │
-└────────────────────────┬────────────────────────────────────┘
-                         │ LiveKit Protocol
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Python Backend Agent                           │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
-│  │  Deepgram   │→ │ Google Gemini│→ │  Murf Falcon    │   │
-│  │  (STT)      │  │    (LLM)     │  │    (TTS)        │   │
-│  └─────────────┘  └──────────────┘  └─────────────────┘   │
-│         Speech → Text → AI Response → Natural Voice        │
-└─────────────────────────────────────────────────────────────┘
+Day7/
+├── backend/
+│   ├── src/
+│   │   ├── agent.py           # Voice agent with function tools
+│   │   └── cart_manager.py    # Cart operations & order logic
+│   ├── catalog.json           # Product catalog (20 items)
+│   ├── recipes.json           # Recipe-to-ingredients mapping
+│   └── orders.json            # Saved orders (output)
+├── frontend/
+│   ├── app/
+│   │   ├── (app)/
+│   │   │   └── page.tsx       # Main app entry
+│   │   └── api/
+│   │       └── orders/
+│   │           └── latest/
+│   │               └── route.ts  # API for last order
+│   └── components/
+│       └── app/
+│           └── welcome-view.tsx  # Landing page UI
+└── README.md
 ```
 
-**Flow:**
-1. User speaks → Frontend captures audio
-2. Audio streams to LiveKit server via WebRTC
-3. Backend agent receives audio → Deepgram transcribes to text
-4. Text sent to Gemini → AI generates response
-5. Response sent to Murf Falcon → Converts to natural speech
-6. Audio streams back through LiveKit → User hears response
+## 🛠️ Tech Stack
 
-**All running locally on your machine!** 🏠
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Voice Agent** | LiveKit Agents | Voice streaming & session management |
+| **LLM** | Google Gemini 2.5 Flash | Conversational AI brain |
+| **TTS** | Murf Falcon | Ultra-fast voice synthesis |
+| **STT** | Deepgram Nova-3 | Speech recognition |
+| **Backend** | Python 3.9+ | Agent logic & cart management |
+| **Frontend** | Next.js 15 + TypeScript | Web interface |
+| **Styling** | Tailwind CSS | UI design |
+| **Data Storage** | JSON files | Catalog, recipes, orders |
 
-## 🎯 Challenge Progress
+## 🎨 Real-Time UI Features
 
-| Day | Challenge | Status | Demo |
-|-----|-----------|--------|------|
-| 1 | Get Starter Voice Agent Running | ✅ Complete | [Link](#) |
-| 2 | Falcon Brew - AI Barista | ✅ Complete | [Link](#) |
-| 3 | Health & Wellness Companion + Notion | ✅ Complete | [Link](#) |
-| 4 | Teach-the-Tutor - Active Recall Coach | ✅ Complete | [Link](#) |
-| 5 | Zoho CRM SDR - Enterprise Sales Assistant | ✅ Complete | [Link](#) |
-| 6 | SecureBank Fraud Alert Agent | ✅ Complete | [Link](#) |
-| 7 | QuickBasket - Food & Grocery Voice Ordering | ✅ Complete | [Link](#) |
-| 8 | TBD | ⏳ Upcoming | - |
-| 9 | TBD | ⏳ Upcoming | - |
-| 10 | TBD | ⏳ Upcoming | - |
+### Cart Tracking System
+The UI automatically tracks cart changes by parsing agent messages in real-time:
 
-## 🏃 Quick Start Guide
+**Detects:**
+- ✅ Item additions: "Added 2 Whole Wheat Bread to your cart"
+- ✅ Recipe additions: "I've added Maggi, Butter, Onions to your cart for maggi"
+- ✅ Cart summaries: "You have 3 items in your cart: 1 Maggi at ₹14..."
+- ✅ Item removals: "Removed X from your cart"
+- ✅ Order placement: "Your order ORD-20251128-145653 has been placed"
+- ✅ Cart clearing: "Your cart has been cleared"
 
-### 📋 Prerequisites
+**Updates:**
+- 📊 Cart widget shows live item count and total
+- 🎯 Cart drawer displays all items with quantities and prices
+- 💰 Automatic total calculation
+- 🧾 Order receipt modal pops up automatically when order is placed
+- 📥 Download order as JSON file
 
-Before you begin, ensure you have the following installed:
+### UI Components
 
-- **Python 3.9+** - [Download](https://python.org)
-- **uv** (Python package manager) - [Install Guide](https://docs.astral.sh/uv/)
-- **Node.js 18+** - [Download](https://nodejs.org)
-- **pnpm** - Install via `npm install -g pnpm` or `brew install pnpm`
-- **LiveKit Server** - Install via `brew install livekit` (macOS) or [other platforms](https://docs.livekit.io/home/self-hosting/local/)
+**1. Cart Status Widget (Bottom-Right)**
+- Shows: Items count and total amount
+- Hover animation with scale effect
+- Click to open cart drawer
+- Green accent border
 
-### 🚀 Installation & Setup
+**2. Cart Drawer (Slide-in from Right)**
+- Full item list with quantities and line totals
+- Subtotal calculation
+- Close button and backdrop
+- Smooth spring animation
+- Empty state message
 
-#### Step 1: Clone the Repository
+**3. Order Receipt Modal (Center)**
+- Success icon with green theme
+- Order ID and timestamp
+- Complete items list
+- Total amount highlighted
+- Download JSON button (functional!)
+- Auto-closes after 10 seconds
+
+**4. Last Order Button (Bottom-Left)**
+- View previous order anytime
+- Disabled when no orders exist
+- Opens same receipt modal
+
+**5. Brand Header (Top-Left)**
+- QuickBasket branding
+- Clean white text
+- Fixed positioning
+
+## 🎯 Function Tools
+
+The agent has 7 function tools that Gemini can call:
+
+### 1. `add_to_cart(item_name, quantity)`
+Adds items to the shopping cart by name.
+
+**Example:** "Add 2 loaves of bread"
+
+### 2. `remove_from_cart(item_name)`
+Removes an item completely from cart.
+
+**Example:** "Remove the milk"
+
+### 3. `update_cart_quantity(item_name, quantity)`
+Updates quantity of an existing cart item.
+
+**Example:** "Change bread to 3"
+
+### 4. `list_cart()`
+Returns current cart contents and total price.
+
+**Example:** "What's in my cart?"
+
+### 5. `add_ingredients_for_dish(dish_name, servings)`
+Adds all ingredients for a recipe to cart.
+
+**Example:** "I need ingredients for pasta for two"
+
+### 6. `place_order(customer_name, customer_address, delivery_instructions)`
+Finalizes and saves the order to `orders.json`.
+
+**Example:** "Place my order" → Agent asks for name and address
+
+### 7. `clear_cart()`
+Empties the entire cart.
+
+**Example:** "Clear my cart"
+
+## 💬 Conversation Examples
+
+### Example 1: Simple Order
+```
+User: "Hi, I need some groceries"
+Agent: "Hello! Welcome to QuickBasket. I can help you order groceries, snacks, 
+        and prepared foods. What would you like to order today?"
+
+User: "Add 2 loaves of bread and a liter of milk"
+Agent: "Added 2 Whole Wheat Bread to your cart. Added 1 Full Cream Milk to your cart."
+
+User: "What's in my cart?"
+Agent: "You have 2 items in your cart: 2 Whole Wheat Bread at rupees 45 each, 
+        1 Full Cream Milk at rupees 65 each. Your total is rupees 155."
+
+User: "That's all, place my order"
+Agent: "What's your name for the order?"
+
+User: "Varshith"
+Agent: "And what's your delivery address?"
+
+User: "123 Main Street"
+Agent: "Your order ORD-20250128-143022 has been placed successfully! 
+        Total: rupees 155. Thank you for shopping with QuickBasket!"
+```
+
+### Example 2: Recipe Ingredients
+```
+User: "I want to make a peanut butter sandwich"
+Agent: "I've added Whole Wheat Bread, Creamy Peanut Butter to your cart 
+        for peanut butter sandwich."
+
+User: "Actually, make that pasta for two people"
+Agent: "I've added Penne Pasta, Tomato Basil Pasta Sauce, Cheddar Cheese Block 
+        to your cart for pasta for two."
+```
+
+### Example 3: Cart Management
+```
+User: "Add 3 packets of chips"
+Agent: "Added 3 Classic Salted Chips to your cart."
+
+User: "Change that to 5"
+Agent: "Updated Classic Salted Chips to 5 units."
+
+User: "Remove the chips"
+Agent: "Removed Classic Salted Chips from your cart."
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9+ with [uv](https://docs.astral.sh/uv/)
+- Node.js 18+ with pnpm
+- [LiveKit Server](https://docs.livekit.io/home/self-hosting/local/) (`brew install livekit`)
+- API Keys:
+  - Murf Falcon API key
+  - Google Gemini API key
+  - Deepgram API key
+
+### Installation
+
+**1. Backend Setup**
 ```bash
-git clone https://github.com/varshithreddy39/murf-ai-voice-agents-challenge.git
-cd murf-ai-voice-agents-challenge/Day1
-```
+cd Day7/backend
 
-#### Step 2: Backend Configuration
-```bash
-cd backend
-
-# Install Python dependencies
+# Install dependencies
 uv sync
 
-# Create environment file
+# Configure environment
 cp .env.example .env
+# Edit .env with your API keys:
+# - LIVEKIT_URL=ws://127.0.0.1:7880
+# - LIVEKIT_API_KEY=devkey
+# - LIVEKIT_API_SECRET=secret
+# - MURF_API_KEY=your_key
+# - GOOGLE_API_KEY=your_key
+# - DEEPGRAM_API_KEY=your_key
 
-# Edit .env and add your API keys:
-# LIVEKIT_URL=ws://127.0.0.1:7880
-# LIVEKIT_API_KEY=devkey
-# LIVEKIT_API_SECRET=secret
-# MURF_API_KEY=your_murf_api_key
-# DEEPGRAM_API_KEY=your_deepgram_api_key
-# GOOGLE_API_KEY=your_google_api_key
-
-# Download required AI models (VAD, turn detector)
+# Download required models
 uv run python src/agent.py download-files
 ```
 
-#### Step 3: Frontend Configuration
+**2. Frontend Setup**
 ```bash
-cd ../frontend
+cd Day7/frontend
 
-# Install Node dependencies
+# Install dependencies
 pnpm install
 
-# Create environment file
+# Configure environment
 cp .env.example .env.local
-
-# Edit .env.local with local LiveKit credentials:
-# LIVEKIT_API_KEY=devkey
-# LIVEKIT_API_SECRET=secret
-# LIVEKIT_URL=ws://127.0.0.1:7880
+# Edit .env.local with LiveKit credentials
 ```
 
-#### Step 4: Launch the Application
+**3. Run the Application**
 
-Open **three separate terminals** and run:
+Open 3 terminals:
 
-**Terminal 1 - Start Local LiveKit Server:**
 ```bash
+# Terminal 1 - LiveKit Server
 livekit-server --dev
-```
-This starts LiveKit on `ws://127.0.0.1:7880` with default dev credentials.
 
-**Terminal 2 - Start Backend Agent:**
-```bash
-cd Day1/backend
+# Terminal 2 - Backend Agent
+cd Day7/backend
 uv run python src/agent.py dev
-```
-The agent will connect to LiveKit and wait for voice sessions.
 
-**Terminal 3 - Start Frontend:**
-```bash
-cd Day1/frontend
+# Terminal 3 - Frontend
+cd Day7/frontend
 pnpm dev
 ```
-Frontend will be available at `http://localhost:3000`
 
-#### Step 5: Test Your Voice Agent! 🎉
+**4. Open Browser**
 
-1. Open your browser to **http://localhost:3000**
-2. Click **"Start call"** button
-3. Allow microphone permissions
-4. Start talking with your AI voice agent!
+Navigate to `http://localhost:3000` and click "Start Voice Ordering"!
 
-> **💡 Tip:** Make sure all three services are running before starting a conversation.
+## 📊 Data Files
 
-## 🔑 API Keys Setup
-
-### Required API Keys
-
-| Service | Purpose | How to Get |
-|---------|---------|------------|
-| **Murf Falcon** | Ultra-fast text-to-speech | [Sign up at Murf AI](https://murf.ai/api) → Get API key |
-| **Deepgram** | Speech-to-text transcription | [Create account](https://deepgram.com) → Generate API key |
-| **Google Gemini** | Conversational AI brain | [Google AI Studio](https://aistudio.google.com/app/apikey) → Create API key |
-| **LiveKit** | Real-time communication | **Local mode:** Use `devkey` / `secret` (no signup needed!) |
-
-### Local LiveKit Setup (No Cloud Required!)
-
-This project uses **self-hosted LiveKit** running locally on your machine:
-
-```bash
-# Install LiveKit server
-brew install livekit  # macOS
-# For other platforms: https://docs.livekit.io/home/self-hosting/local/
-
-# Run in dev mode (uses default credentials)
-livekit-server --dev
+### catalog.json
+Contains 20 products with structure:
+```json
+{
+  "id": "bread_whole_wheat",
+  "name": "Whole Wheat Bread",
+  "category": "groceries",
+  "price": 45.0,
+  "brand": "FreshBake",
+  "unit": "1 loaf",
+  "tags": ["bread", "sandwich", "vegetarian"]
+}
 ```
 
-**Default Local Credentials:**
-- URL: `ws://127.0.0.1:7880`
-- API Key: `devkey`
-- API Secret: `secret`
-
-No cloud account or credit card needed! 🎉
-
-## 📚 Day-by-Day Journey
-
-### Day 1: Foundation - Basic Voice Agent ✅
-
-**Challenge:** Get the starter voice agent running end-to-end
-
-**What I Built:**
-- ✅ Set up local LiveKit server for self-hosted voice infrastructure
-- ✅ Configured Python backend with LiveKit Agents framework
-- ✅ Integrated Murf Falcon TTS for lightning-fast voice synthesis
-- ✅ Connected Deepgram Nova-3 for accurate speech recognition
-- ✅ Implemented Google Gemini 2.5 Flash for intelligent conversations
-- ✅ Built responsive React/Next.js frontend with beautiful UI
-- ✅ Added noise cancellation and smart turn detection
-- ✅ Successfully tested end-to-end voice conversation
-
-**Tech Highlights:**
-- Voice pipeline latency: < 500ms (thanks to Murf Falcon!)
-- Self-hosted architecture for complete control
-- Production-ready setup with metrics and logging
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day1/)
-
-[📖 View Day 1 Full Details →](./https://github.com/varshithreddy39/murf-ai-voice-agents-challenge/tree/main/Day1)
-
----
-
----
-
-### Day 2: Falcon Brew - AI Barista ✅
-
-**Challenge:** Build a coffee shop barista that takes orders through natural conversation
-
-**What I Built:**
-- ☕ Barista persona with friendly coffee shop conversation style
-- 📝 Order state management (drink, size, milk, extras, name)
-- 🛠️ Function tool for saving complete orders
-- 💾 Order persistence to JSON files
-- 🧾 Professional receipt generation and display
-- 📊 Live order tracking with progress indicators
-- 🎨 Coffee-themed UI with realistic drink colors
-- ✨ Smooth animations and visual feedback
-- 📱 Mobile-responsive design
-- 🖨️ Print-optimized receipts
-
-**Tech Highlights:**
-- Function calling / tool use in LiveKit Agents
-- Real-time state synchronization between voice and UI
-- Dynamic receipt pages with Next.js
-- Toast notifications for order confirmation
-- Coffee cup visualizer with color-coded drinks
-- Progress tracking (e.g., "4/5 items collected")
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day2/)
-
-[📖 View Day 2 Full Details →](./Day2/README.md)
-
----
-
-### Day 3: Health & Wellness Companion + Notion Integration ✅
-
-**Challenge:** Build a supportive wellness companion that tracks mood, energy, and integrates with Notion
-
-**What I Built:**
-- 🌱 Wellness companion persona with empathetic conversation style
-- 💭 Mood and energy level tracking across sessions
-- 📊 Session persistence with streak calculation
-- 🎯 Daily intentions capture and tracking
-- 📝 **Notion API integration** for task management
-- ✅ Voice commands to create, view, and complete tasks
-- 💬 Enhanced chat UI with modern bubbles and keyword highlighting
-- 🎨 Professional design with wellness theme
-- 📈 Real-time stats updates (session count, streak)
-- 🔄 Context-aware conversations referencing past check-ins
-
-**Tech Highlights:**
-- Direct Notion API integration with httpx
-- Function tools for task management (add, fetch, complete)
-- JSON-based session persistence with atomic writes
-- Enhanced chat bubbles with gradient backgrounds
-- Keyword highlighting for Notion operations
-- Real-time stats polling every 3 seconds
-- Case-insensitive status matching
-- Word-to-number parsing for energy levels
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day3/)
-
-[📖 View Day 3 Full Details →](./Day3/README.md)
-
----
-
-### Day 4: Teach-the-Tutor - Active Recall Coach ✅
-
-**Challenge:** Build an AI tutor that teaches programming through active recall - learning by teaching back!
-
-**What I Built:**
-- 🎓 Multi-mode learning system (Learn, Quiz, Teach Back)
-- 🎙️ **Dynamic voice switching** - 3 different voices for 3 modes
-  - Matthew (Learn Mode) - Clear explanations
-  - Alicia (Quiz Mode) - Engaging questions
-  - Ken (Teach Back Mode) - Active listening
-- 📚 5 programming concepts (Variables, Loops, Functions, Conditionals, Arrays)
-- 🛠️ Function tools for topic selection and mode switching
-- 📝 Teaching evaluation with scoring system
-- 🎨 Dynamic UI status bar that changes color per mode
-- ✨ Professional animated welcome screen
-- 🔄 Real-time mode detection and updates
-- 📖 Auto-generated content.json with concept summaries
-
-**Tech Highlights:**
-- Dynamic TTS voice updates during conversation
-- State management across conversation turns
-- Function tools: `select_topic()`, `set_learning_mode()`, `evaluate_teaching()`
-- AssemblyAI for accurate speech recognition
-- Active recall teaching methodology
-- Real-time UI updates based on conversation context
-- Framer Motion animations for smooth transitions
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day4/)
-
-[📖 View Day 4 Full Details →](./Day4/README.md)
-
----
-
-### Day 5: Zoho CRM SDR - Enterprise Sales Assistant ✅
-
-**Challenge:** Build a professional SDR (Sales Development Representative) that qualifies leads through natural conversation
-
-**What I Built:**
-- 🎯 **Proactive SDR Personality** - Guides conversations instead of just responding to questions
-- 📊 **Lead Qualification System** - Systematically captures name, company, team size, pain points, and email
-- 💰 **Smart Pricing Calculator** - Calculates costs based on team size (e.g., 200 users × ₹1,400 = ₹2,80,000/month)
-- 💾 **Automatic Lead Saving** - Saves qualified leads to JSON database with comprehensive error handling
-- 🎤 **Energetic Voice** - Murf Terrell voice with Promo style for enthusiastic sales conversations
-- 🎨 **Enterprise-Grade UI** - Professional dark theme with glassmorphism and premium animations
-- 💬 **Speech Bubbles** - WhatsApp-style chat interface with authentic bubble tails
-- ✨ **Advanced Animations** - Floating particles, pulsing status indicators, spring physics transitions
-- 🔄 **Real-time Status Bar** - Live connection indicator with "Zoho CRM Assistant - LIVE" badge
-- 📝 **Product Knowledge Base** - Loaded with Zoho CRM features, pricing tiers, and FAQs
-
-**Tech Highlights:**
-- Function calling for structured lead data capture
-- AssemblyAI for accurate speech recognition (switched from Deepgram)
-- Comprehensive error handling with emoji-based logging (🔥 📝 ✅ ❌)
-- Glassmorphic UI components with backdrop blur effects
-- Framer Motion for spring physics and GPU-accelerated animations
-- Particle background with seeded random for SSR/hydration compatibility
-- Speech bubble tails using CSS borders for authentic chat appearance
-- Lead data persistence with atomic writes and verification
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day5/)
-
-[📖 View Day 5 Full Details →](./Day5/README.md)
-
----
-
-### Day 6: SecureBank Fraud Alert Agent ✅
-
-**Challenge:** Build a fraud detection voice agent that verifies suspicious transactions
-
-**What I Built:**
-- 🏦 **Professional Bank Fraud Agent** - Calm, reassuring fraud prevention representative
-- 🗄️ **SQLite Fraud Database** - 6 pre-loaded suspicious transaction cases
-- 🔐 **Identity Verification** - Security questions loaded from database
-- 💳 **Transaction Review** - Clear reading of suspicious charges with details
-- ✅ **Case Resolution** - Mark transactions as safe or fraudulent
-- 🚫 **Automatic Card Blocking** - Immediate action on confirmed fraud
-- 💾 **JSON Export** - Automatically saves resolved cases to JSON files
-- 🎨 **Minimal Professional UI** - Clean white card design like real banking alerts
-- 📊 **Database Dashboard** - View all cases with color-coded status
-- 🔄 **Reset Utility** - Easy case reset for testing
-
-**Tech Highlights:**
-- SQLite database with fraud case management
-- Function tools: `load_fraud_case()`, `verify_customer()`, `mark_transaction_safe()`, `mark_transaction_fraudulent()`
-- Dynamic security questions from database
-- JSON file export for each resolved case
-- AssemblyAI for accurate speech recognition
-- Murf Natalie voice (professional, trustworthy tone)
-- Clean minimal UI with fraud alert theme
-- Comprehensive testing utilities
-
-**Sample Cases:**
-- Raju - $25,000 wire transfer to Dubai
-- Sarah Williams - $8,750 luxury watch from Russia
-- Michael Chen - $15,000 crypto exchange from Nigeria
-- John Smith - $2,499 e-commerce from China
-- Emily Rodriguez - $3,299 electronics from China
-- David Thompson - $599 gaming service
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day6/)
-
-[📖 View Day 6 Full Details →](./Day6/README.md)
-
----
-
-### Day 7: QuickBasket - Food & Grocery Voice Ordering Assistant ✅
-
-**Challenge:** Build a voice-powered food and grocery ordering system with cart management and recipe lookup
-
-**What I Built:**
-- 🛒 **Voice Cart Management** - Add, remove, update items through natural conversation
-- 📖 **Recipe Intelligence** - Say "ingredients for pasta" and get all items added automatically
-- 💾 **Order Persistence** - Orders saved to JSON with customer details
-- 📦 **Product Catalog** - 20 diverse items across groceries, snacks, prepared food, beverages
-- 🎨 **Real-Time UI Overlays** - Cart widget, drawer, receipt modal, all updating live
-- 🎯 **Smart Matching** - Natural language item recognition
-- 📋 **Cart Review** - Ask "what's in my cart?" anytime
-
-**Tech Highlights:**
-- Function tools for cart operations (add, remove, update, list, clear)
-- Recipe-to-ingredients mapping system
-- Real-time cart tracking from conversation messages
-- Slide-in cart drawer with Framer Motion animations
-- Order receipt modal with JSON download
-- Professional gradient UI with green grocery theme
-- AssemblyAI for accurate speech recognition
-- Murf Falcon for ultra-fast voice synthesis
-
-**UI Components:**
-- Welcome page with category chips and "How It Works" guide
-- Floating cart status widget (bottom-right)
-- Slide-in cart drawer from right side
-- Order receipt modal with success animation
-- "View Last Order" button (bottom-left)
-- QuickBasket branding (top-left)
-- All overlays work seamlessly with LiveKit controls
-
-**Demo:** [Watch on LinkedIn](#) | [View Code](./Day7/)
-
-[📖 View Day 7 Full Details →](./Day7/README.md)
-
----
-
-### Day 8-10: Coming Soon... 🚀
-
-Each day will bring new challenges and capabilities:
-- Custom personas and conversation styles
-- Domain-specific agents (customer service, tutoring, etc.)
-- Tool integration and function calling
-- Multi-language support
-- Advanced voice controls
-- And much more!
-
-**Follow along for daily updates!**
-
-## 🎥 Demo Videos
-
-- [Day 1 Demo - LinkedIn Post](#)
-
-## 🎯 Current Features
-
-### Voice Intelligence
-- ⚡ **Ultra-fast TTS** - Murf Falcon delivers consistently fastest response times
-- � **Higxh-accuracy STT** - Deepgram Nova-3 for precise transcription
-- 🧠 **Smart conversations** - Google Gemini 2.5 Flash for natural dialogue
-- 🎯 **Context-aware turns** - Multilingual turn detector knows when to respond
-- � **Noise caancellation** - Crystal-clear audio even in noisy environments
-
-### User Experience
-- 🎨 **Beautiful UI** - Modern, responsive design with smooth animations
-- 🌓 **Dark/Light themes** - Automatic system preference detection
-- 📊 **Audio visualization** - Real-time waveform and level monitoring
-- 📹 **Video support** - Optional camera streaming
-- 🖥️ **Screen sharing** - Share your screen during conversations
-- 📱 **Mobile responsive** - Works great on all devices
-
-### Developer Experience
-- 🏠 **Self-hosted** - Complete control with local LiveKit server
-- 📈 **Metrics & logging** - Built-in performance monitoring
-- 🧪 **Testing framework** - Comprehensive test suite included
-- 🐳 **Docker ready** - Production deployment made easy
-- 📚 **Well documented** - Clear setup and customization guides
-
-## 📖 Documentation & Resources
-
-### Project Documentation
-- 📘 [Backend Setup & API](./Day1/backend/README.md) - Python agent implementation details
-- 📗 [Frontend Guide](./Day1/frontend/README.md) - React/Next.js customization
-- 📋 [Day 1 Challenge Task](./Day1/challenges/Day%201%20Task.md) - Complete task description
-
-### External Resources
-- 🎯 [Murf Falcon TTS API](https://murf.ai/api/docs/text-to-speech/streaming) - Fastest TTS documentation
-- 🔊 [LiveKit Agents Framework](https://docs.livekit.io/agents) - Voice AI development guide
-- 🏠 [Self-hosting LiveKit](https://docs.livekit.io/home/self-hosting/local/) - Local server setup
-- 🎤 [Deepgram API](https://developers.deepgram.com/) - Speech-to-text docs
-- 🧠 [Google Gemini](https://ai.google.dev/gemini-api/docs) - LLM integration guide
-
-### Helpful Tutorials
-- [Building Voice Agents](https://docs.livekit.io/agents/start/voice-ai/) - Step-by-step guide
-- [Testing Voice Agents](https://docs.livekit.io/agents/build/testing/) - Quality assurance
-- [Production Deployment](https://docs.livekit.io/agents/ops/deployment/) - Going live
-
-## 🤝 Connect & Follow Along
-
-Are you participating in the challenge too? Let's connect and share our learnings!
-
-### Find Me On
-- 💼 **LinkedIn:** [Varshith Reddy](https://linkedin.com/in/varshithreddy39)
-- 🐙 **GitHub:** [@varshithreddy39](https://github.com/varshithreddy39)
-
-### Challenge Hashtags
-When sharing your progress, use these hashtags:
-- `#MurfAIVoiceAgentsChallenge`
-- `#10DaysofAIVoiceAgents`
-- Tag **@Murf AI** in your posts!
-
-### Community
-- 💬 [LiveKit Community Slack](https://livekit.io/join-slack) - Get help and share ideas
-- 🎯 [Murf AI Community](#) - Connect with other challenge participants
-
----
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><b>LiveKit server won't start</b></summary>
-
-Make sure port 7880 is not already in use:
-```bash
-lsof -i :7880
-# Kill any process using the port
-kill -9 <PID>
+### recipes.json
+Maps dish names to item IDs:
+```json
+{
+  "peanut butter sandwich": ["bread_whole_wheat", "peanut_butter_jar"],
+  "pasta for two": ["pasta_pack", "pasta_sauce_jar", "cheese_block"]
+}
 ```
-</details>
 
-<details>
-<summary><b>Backend can't find API keys</b></summary>
+### orders.json
+Stores completed orders:
+```json
+{
+  "order_id": "ORD-20250128-143022",
+  "timestamp": "2025-01-28T14:30:22.123456",
+  "customer_name": "Varshith",
+  "customer_address": "123 Main Street",
+  "items": [...],
+  "order_total": 155.0
+}
+```
 
-Ensure your `.env` file is in the `Day1/backend/` directory and contains all required keys. The file should NOT be named `.env.local` for the backend.
-</details>
+## 🎨 UI Features
 
-<details>
-<summary><b>Frontend connection fails</b></summary>
+### Welcome Page
+- **Hero Section** - Large title, subtitle, and CTA button
+- **Category Chips** - Visual representation of product categories
+- **How It Works** - 3-step guide with numbered cards
+- **Last Order Preview** - Shows most recent order details
+- **Footer** - Branding and tech stack credits
 
-1. Verify LiveKit server is running: `lsof -i :7880`
-2. Check backend agent is connected (look for "registered worker" in logs)
-3. Ensure `.env.local` has correct credentials matching LiveKit server
-</details>
+### Design System
+- **Colors:** Green theme (#22c55e) for grocery feel
+- **Typography:** Clean, modern fonts
+- **Layout:** Mobile-responsive with Tailwind CSS
+- **Animations:** Smooth hover effects on CTA button
 
-<details>
-<summary><b>No audio output</b></summary>
+## 🧪 Testing the Agent
 
-1. Check browser microphone permissions
-2. Verify Murf API key is valid
-3. Look for errors in browser console (F12)
-4. Ensure backend logs show successful TTS synthesis
-</details>
+Try these voice commands:
 
-Need more help? Open an [issue](https://github.com/varshithreddy39/murf-ai-voice-agents-challenge/issues) or reach out on LinkedIn!
+**Basic Orders:**
+- "Add 2 loaves of bread"
+- "I need a liter of milk"
+- "Add some eggs and butter"
 
-## 📝 License
+**Recipe Ingredients:**
+- "I want to make a peanut butter sandwich"
+- "Get me ingredients for pasta for two"
+- "I need stuff for maggi"
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Cart Management:**
+- "What's in my cart?"
+- "Remove the bread"
+- "Change milk to 2 liters"
+- "Clear my cart"
+
+**Checkout:**
+- "That's all"
+- "Place my order"
+- "I'm done, checkout"
+
+## 🔧 Customization
+
+### Adding New Products
+Edit `backend/catalog.json`:
+```json
+{
+  "id": "new_item_id",
+  "name": "Product Name",
+  "category": "groceries",
+  "price": 99.0,
+  "brand": "Brand Name",
+  "unit": "1 unit",
+  "tags": ["tag1", "tag2"]
+}
+```
+
+### Adding New Recipes
+Edit `backend/recipes.json`:
+```json
+{
+  "new dish name": ["item_id_1", "item_id_2"]
+}
+```
+
+### Modifying Agent Persona
+Edit the `instructions` in `backend/src/agent.py` to change conversation style.
+
+## 🎯 What I Learned
+
+### Technical Skills
+- **Function Tool Design** - Creating intuitive tools for LLM to call
+- **State Management** - Managing cart state across conversation turns
+- **JSON Persistence** - Reading/writing structured data files
+- **Natural Language Processing** - Fuzzy matching for item names
+- **API Design** - Building Next.js API routes for data access
+
+### Voice UX Patterns
+- **Confirmation Feedback** - Always confirm cart changes verbally
+- **Progressive Disclosure** - Ask for details only when needed
+- **Error Handling** - Graceful fallbacks for unknown items
+- **Conversation Flow** - Natural checkout process with prompts
+
+### Best Practices
+- **Modular Code** - Separated cart logic into dedicated module
+- **Logging** - Comprehensive emoji-based logging for debugging
+- **Type Safety** - Proper type hints in Python functions
+- **Error Recovery** - Handles missing files and invalid data
+
+## 📚 Resources
+
+- [Murf Falcon TTS](https://murf.ai/api/docs/text-to-speech/streaming)
+- [LiveKit Agents](https://docs.livekit.io/agents)
+- [Google Gemini](https://ai.google.dev/gemini-api/docs)
+- [Deepgram STT](https://developers.deepgram.com/)
 
 ## 🙏 Acknowledgments
 
-- [Murf AI](https://murf.ai) for organizing this amazing challenge
-- [LiveKit](https://livekit.io) for the excellent voice AI framework
-- The open-source community for the starter templates
+Built as part of the **Murf AI Voice Agents Challenge** - 10 Days of Voice AI
+
+**Tech Stack:**
+- Murf Falcon (TTS)
+- LiveKit (Voice Infrastructure)
+- Google Gemini (LLM)
+- Deepgram (STT)
+- Next.js 15 (Frontend)
+- Python 3.9+ (Backend)
 
 ---
 
-## 🚀 Want to Try This Yourself?
-
-1. **Star this repo** ⭐ to follow along with the challenge
-2. **Fork it** to create your own version
-3. **Clone and run** following the Quick Start guide above
-4. **Share your progress** on LinkedIn with the challenge hashtags!
-
-## 📝 Contributing
-
-Found a bug or have a suggestion? Feel free to:
-- Open an [issue](https://github.com/varshithreddy39/murf-ai-voice-agents-challenge/issues)
-- Submit a pull request
-- Share your improvements!
-
----
-
-<div align="center">
-
-### Built with ❤️ as part of the Murf AI Voice Agents Challenge
-
-**Powered by:** [Murf Falcon](https://murf.ai) • [LiveKit](https://livekit.io) • [Deepgram](https://deepgram.com) • [Google Gemini](https://ai.google.dev)
-
-⭐ **Star this repo if you're following along!** ⭐
-
-</div>
+**Day 7 Complete!** ✅ Food & Grocery Voice Ordering System with cart management, recipe lookup, and order persistence.
